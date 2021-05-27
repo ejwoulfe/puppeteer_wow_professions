@@ -7,7 +7,19 @@ const options = {
     executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
 };
 
+
+
 (async () => {
+
+    function gatherTableURLs(hrefArray) {
+
+        // Gather all the html nodes that hold the href information.
+        let tableRows = document.querySelectorAll('#lv-spells > div.listview-scroller-horizontal > div > table > tbody > tr > td:nth-child(2) > div > a');
+        // Iterate through the NodeList and grab the href values from them.
+        for (let i = 0; i < tableRows.length; i++) {
+            hrefArray.push(tableRows[i].href);
+        };
+    }
 
     try {
 
@@ -21,24 +33,23 @@ const options = {
         // Go to Profession website
         await page.goto('https://tbc.wowhead.com/spells/professions/alchemy');
 
+
         // Wait for selector that holds the data we want to load.
         console.log("Waiting...");
         await page.waitForSelector('#lv-spells');
         console.log("Selector Loaded...");
 
-        let recipe = await page.evaluate(() => {
 
-            let recipeLink = document.querySelector('#lv-spells > div.listview-scroller-horizontal > div > table > tbody > tr:nth-child(2) > td:nth-child(2) > div > a').textContent;
+        // Gather item data within an evaluate function.
+        let hrefs = await page.evaluate(() => {
 
+            // Gather all the html nodes that hold the href information.
+            return Array.from(document.querySelectorAll('#lv-spells > div.listview-scroller-horizontal > div > table > tbody > tr > td:nth-child(2) > div > a'), a => a.href);
 
-
-            return recipeLink;
 
         });
 
-        console.log(recipe);
-
-
+        console.log(hrefs);
 
 
 
