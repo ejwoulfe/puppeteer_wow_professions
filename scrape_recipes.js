@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer');
+const fsLibrary = require('fs');
+const profession = "leatherworking";
 
 const options = {
     headless: false,
@@ -11,15 +13,6 @@ const options = {
 
 (async () => {
 
-    function gatherTableURLs(hrefArray) {
-
-        // Gather all the html nodes that hold the href information.
-        let tableRows = document.querySelectorAll('#lv-spells > div.listview-scroller-horizontal > div > table > tbody > tr > td:nth-child(2) > div > a');
-        // Iterate through the NodeList and grab the href values from them.
-        for (let i = 0; i < tableRows.length; i++) {
-            hrefArray.push(tableRows[i].href);
-        };
-    }
 
     try {
 
@@ -31,7 +24,7 @@ const options = {
 
         console.log("Navigating to website.");
         // Go to Profession website
-        await page.goto('https://tbc.wowhead.com/spells/professions/alchemy');
+        await page.goto('https://tbc.wowhead.com/spells/professions/' + profession);
 
 
         // Wait for selector that holds the data we want to load.
@@ -41,19 +34,56 @@ const options = {
 
 
         // Gather item data within an evaluate function.
-        let hrefs = await page.evaluate(() => {
+        let tableHrefs = await page.evaluate(() => {
 
             // Gather all the html nodes that hold the href information.
             return Array.from(document.querySelectorAll('#lv-spells > div.listview-scroller-horizontal > div > table > tbody > tr > td:nth-child(2) > div > a'), a => a.href);
-
-
         });
 
-        console.log(hrefs);
+
+        // Variable to check if next button is active.
+        let buttonActive = await page.evaluate(() => {
+            return (document.querySelector('#lv-spells > div.listview-band-top > div.listview-nav > a:nth-child(5)').outerHTML).includes("yes");
+        });
+
+        let urls = [];
+
+        // Do while loop to keep pressing the next button as long as it is active.
+        do {
+
+            // Every iteration have to reinstantiate to get the updated value of the html.
+            buttonActive = await page.evaluate(() => {
+                return (document.querySelector('#lv-spells > div.listview-band-top > div.listview-nav > a:nth-child(5)').outerHTML).includes("yes");
+            });
+            tableHrefs = await page.evaluate(() => {
+
+                // Gather all the html nodes that hold the href information.
+                return Array.from(document.querySelectorAll('#lv-spells > div.listview-scroller-horizontal > div > table > tbody > tr > td:nth-child(2) > div > a'), a => a.href);
+            });
+
+            await urls.push(...tableHrefs);
+            await page.click('#lv-spells > div.listview-band-top > div.listview-nav > a:nth-child(5)');
+
+            // Wait for 2 seconds for all the data to load, just a safety precaution.
+            // await page.waitForTimeout(2000);
+
+
+        } while (buttonActive);
 
 
 
 
+
+
+        // Write urls to a.
+        fsLibrary.writeFile(profession + '_urls.txt',
+            urls.map((value) => {
+                return value + "\n";
+            }),
+            (error) => {
+
+                if (error) throw err;
+            })
 
 
         await browser.close();
