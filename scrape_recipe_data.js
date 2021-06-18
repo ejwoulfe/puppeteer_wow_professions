@@ -28,7 +28,6 @@ const options = {
             await page.setDefaultNavigationTimeout(0);
             await page.goto(recipeUrls[i]);
 
-            await page.waitForTimeout(5000);
 
 
             await page.close();

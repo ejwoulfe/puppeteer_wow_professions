@@ -1,4 +1,3 @@
-https://tbc.wowhead.com/spell=2259/alchemy
 https://tbc.wowhead.com/spell=2329/elixir-of-lions-strength
 https://tbc.wowhead.com/spell=2330/minor-healing-potion
 https://tbc.wowhead.com/spell=2331/minor-mana-potion
@@ -157,10 +156,6 @@ https://tbc.wowhead.com/spell=28588/flask-of-mighty-restoration
 https://tbc.wowhead.com/spell=28589/flask-of-relentless-assault
 https://tbc.wowhead.com/spell=28590/flask-of-blinding-light
 https://tbc.wowhead.com/spell=28591/flask-of-pure-death
-https://tbc.wowhead.com/spell=28596/alchemy
-https://tbc.wowhead.com/spell=28672/transmutation-master
-https://tbc.wowhead.com/spell=28675/potion-master
-https://tbc.wowhead.com/spell=28677/elixir-master
 https://tbc.wowhead.com/spell=29688/transmute-primal-might
 https://tbc.wowhead.com/spell=32765/transmute-earthstorm-diamond
 https://tbc.wowhead.com/spell=32766/transmute-skyfire-diamond
