@@ -45,10 +45,14 @@ const options = {
 
 
         let reagents = await page.evaluate(() => {
+
+            // Gather the html nodes that hold the reagents data we need.
             let htmlNodes = Array.from(document.querySelectorAll('#icon-list-reagents > tbody > tr'));
 
+            // Filter through the html nodes looking only for the ones which are currently being displayed.
             let reagentsList = htmlNodes.filter(html => !html.outerHTML.includes('style="display:none"'));
 
+            // Create a new array to hold the html strings of the reagents.
             let reagentsHtml = reagentsList.map((value) => {
                 return value.outerHTML;
             })
