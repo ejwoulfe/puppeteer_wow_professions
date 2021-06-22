@@ -60,13 +60,17 @@ const options = {
             return reagentsHtml;
         });
 
-        console.log(reagents);
-        // .outerHTML.includes('style="display:none"')
+        
+        console.log(reagents[0]);
 
+        for(let i =0; i< reagents.length-1;i++){
+            let startIndex = reagents[i].indexOf('quantity');
+            let endIndex = reagents[i].indexOf('"><th');
+            console.log(reagents[i].substring(startIndex +10, endIndex));
 
+        }
 
-
-        await page.close();
+        await browser.close();
 
 
 
@@ -74,6 +78,8 @@ const options = {
         console.log("Error: " + err);
 
 
+    }finally{
+        process.exit(1);
     }
 
 })();
